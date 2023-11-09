@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app_uplabs/config/router/app_router.dart';
+import 'package:movie_app_uplabs/config/theme/app_theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,13 +11,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: appRouter,
       title: 'Cinema Uplabs',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Una app de Movies'),
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme().getTheme(),
     );
   }
 }

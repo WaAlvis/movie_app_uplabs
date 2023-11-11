@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movie_app_uplabs/config/helpers/human_formats.dart';
 import 'package:movie_app_uplabs/domain/entities/movie.dart';
 
@@ -27,7 +28,7 @@ class _MovieGridListviewState extends State<MovieGridListview> {
     scrollController.addListener(() {
       if (widget.loadNextPage == null) return;
 
-      if ((scrollController.position.pixels  + 600) >=
+      if ((scrollController.position.pixels + 600) >=
           scrollController.position.maxScrollExtent) {
         widget.loadNextPage!();
       }
@@ -43,18 +44,21 @@ class _MovieGridListviewState extends State<MovieGridListview> {
   @override
   Widget build(BuildContext context) {
     const gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3, // number of items in each row
-        mainAxisSpacing: 2.0, // spacing between rows
-        crossAxisSpacing: 2.0, // spacing between columns
-        mainAxisExtent: 280, // height of item
-        );
+      crossAxisCount: 3, // number of items in each row
+      mainAxisSpacing: 2.0, // spacing between rows
+      crossAxisSpacing: 2.0, // spacing between columns
+      mainAxisExtent: 280, // height of item
+    );
 
     return GridView.builder(
         controller: scrollController,
         itemCount: widget.movies.length,
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
-          return FadeInRight(child: _Slide(movie: widget.movies[index]));
+          return FadeInRight(
+              child: _Slide(
+            movie: widget.movies[index],
+          ));
         },
         gridDelegate: gridDelegate);
   }
@@ -76,25 +80,28 @@ class _Slide extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //* Imagen
-          SizedBox(
-            width: 150,
-            height: 200,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Image.network(
-                movie.posterPath,
-                fit: BoxFit.cover,
-                width: 150,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress != null) {
-                    return const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(
-                          child: CircularProgressIndicator(strokeWidth: 2)),
-                    );
-                  }
-                  return FadeIn(child: child);
-                },
+          GestureDetector(
+            onTap: () => context.push('/movie/${movie.id}'),
+            child: SizedBox(
+              width: 150,
+              height: 200,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.network(
+                  movie.posterPath,
+                  fit: BoxFit.cover,
+                  width: 150,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress != null) {
+                      return const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Center(
+                            child: CircularProgressIndicator(strokeWidth: 2)),
+                      );
+                    }
+                    return FadeIn(child: child);
+                  },
+                ),
               ),
             ),
           ),

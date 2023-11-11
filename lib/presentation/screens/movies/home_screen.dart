@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_uplabs/domain/entities/movie.dart';
 import 'package:movie_app_uplabs/infrastructure/datasources/moviedb_datasource.dart';
 import 'package:movie_app_uplabs/infrastructure/repositories/movie_repository_impl.dart';
-import 'package:movie_app_uplabs/presentation/blocs/movies_bloc/movies_bloc.dart';
+import 'package:movie_app_uplabs/presentation/blocs/movies_bloc/movie_bloc.dart';
 import 'package:movie_app_uplabs/presentation/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {

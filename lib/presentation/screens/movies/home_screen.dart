@@ -4,6 +4,7 @@ import 'package:movie_app_uplabs/domain/entities/movie.dart';
 import 'package:movie_app_uplabs/infrastructure/datasources/moviedb_datasource.dart';
 import 'package:movie_app_uplabs/infrastructure/repositories/movie_repository_impl.dart';
 import 'package:movie_app_uplabs/presentation/blocs/movies_bloc/movies_bloc.dart';
+import 'package:movie_app_uplabs/presentation/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   static const name = 'home-screen';
@@ -14,14 +15,15 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final movieRepositoryImpl = MovieRepositoryImpl(MoviedbDatasource());
 
-    return Scaffold(
-      body: BlocProvider(
-        create: (_) {
-          final movieBloc = MovieBloc(movieRepository: movieRepositoryImpl);
-          movieBloc.add(FetchMoviesEvent());
-          return movieBloc;
-        },
-        child: const _HomeView(),
+    return BlocProvider(
+      create: (_) {
+        final movieBloc = MovieBloc(movieRepository: movieRepositoryImpl);
+        movieBloc.add(FetchMoviesEvent());
+        return movieBloc;
+      },
+      child: const Scaffold(
+        body: _HomeView(),
+        bottomNavigationBar: CustomBottomNavbar(),
       ),
     );
   }
@@ -33,19 +35,16 @@ class _HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MovieBloc, MovieState>(
-            builder: (context, state) {
-              if (state is MovieLoadingState) {
-                return const CircularProgressIndicator();
-              } else if (state is MovieLoadedState) {
-                print(state.movies[1]);
-                return _ListMovies(state.movies);
-              } else if (state is MovieErrorState) {
-                return Text('Error: ${state.error}');
-              } else {
-                return Container(); // Puedes manejar otros estados según tus necesidades
-              }
-            },
-          );
+      builder: (context, state) {
+        if (state is MovieLoadedState) {
+          return _ListMovies(state.movies);
+        } else if (state is MovieErrorState) {
+          return Text('Error: ${state.error}');
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 }
 
@@ -55,14 +54,17 @@ class _ListMovies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: movies.length,
-      itemBuilder: (context, index) {
-        final movie = movies[index];
-        return ListTile(
-          title: Text(movie.title),
-        );
-      },
+    return Column(
+      children: [
+        const CustomAppbar(),
+        Expanded(
+          child: MovieGridListview(
+            movies: movies,
+            loadNextPage: () =>
+                context.read<MovieBloc>().add(FetchMoreMoviesEvent()),
+          ),
+        ),
+      ],
     );
   }
 }

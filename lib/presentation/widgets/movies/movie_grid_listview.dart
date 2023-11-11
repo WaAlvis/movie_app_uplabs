@@ -1,8 +1,11 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movie_app_uplabs/config/helpers/human_formats.dart';
 import 'package:movie_app_uplabs/domain/entities/movie.dart';
+import 'package:movie_app_uplabs/infrastructure/repositories/movie_repository_impl.dart';
+import 'package:movie_app_uplabs/presentation/blocs/movie_detail_cubit/movie_detail_cubit.dart';
 
 class MovieGridListview extends StatefulWidget {
   final List<Movie> movies;
@@ -81,7 +84,9 @@ class _Slide extends StatelessWidget {
         children: [
           //* Imagen
           GestureDetector(
-            onTap: () => context.push('/movie/${movie.id}'),
+            onTap: () {
+              context.push('/movie/${movie.id}');
+            },
             child: SizedBox(
               width: 150,
               height: 200,

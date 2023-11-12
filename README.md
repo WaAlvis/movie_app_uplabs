@@ -20,7 +20,7 @@ This project uses the concept of [Clean Architecture](https://blog.cleancoder.co
 ![Image](https://github.com/LaCoro/ConsumerFlutterApp/blob/master/screens/lacoro_consumer_arch.png?raw=true)
 
 ##   Demo App
-| ![enter image description here](https://i.ibb.co/KW0LFJq/movie-app-uplabs.gif) | ![enter image description here](https://i.ibb.co/pr9Znrm/detail-movie.gif) |
+| ![enter image description here](https://i.ibb.co/QmkBfb4/detail-movie.gif) |  |
 |--|--|
 |  |  |
 
